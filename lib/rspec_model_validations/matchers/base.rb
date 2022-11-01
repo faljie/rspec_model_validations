@@ -20,10 +20,17 @@ module RspecModelValidations::Matchers::Base
 
   # Run model validations and return attribute errors type
   # @param model [ActiveModel::Model]
+  # @return [Array]
   def attribute_errors model
     model.validate
-    model.errors.group_by_attribute[@attribute].map(&:type)
+    model.errors.group_by_attribute[@attribute]&.map(&:type) || []
   end
+
+  # Return the model attribute value.
+  # Attribute must exist
+  # @param model [ActiveModel::Model]
+  # @return [Object]
+  def attribute_value model; model.instance_variable_get "@#{@attribute}" end
 
   # Format a matcher expected / got faillure message
   # @param expected [String] expected part of the message

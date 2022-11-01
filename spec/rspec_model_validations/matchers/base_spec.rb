@@ -16,6 +16,7 @@ RSpec.describe RspecModelValidations::Matchers::Base do
       def message expected, got; super end
       def attribute_belongs_to! model; super end
       def attribute_errors model; super end
+      def attribute_value model; super end
     end
   end
   let(:instance) { dummy.new :target }
@@ -38,7 +39,7 @@ RSpec.describe RspecModelValidations::Matchers::Base do
     end
   end
 
-  describe '#run_validations!' do
+  describe '#attribute_errors' do
     before { model.target = nil }
     subject { instance.attribute_errors model }
 
@@ -47,6 +48,18 @@ RSpec.describe RspecModelValidations::Matchers::Base do
     end
 
     it { should eq [:blank] }
+
+    context 'when attribute does not have error' do
+      before { model.target = :valid }
+
+      it { should eq [] }
+    end
+  end
+
+  describe '#attribute_value' do
+    subject { instance.attribute_value model }
+
+    it { should eq :valid }
   end
 
   describe '#message' do
