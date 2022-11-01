@@ -2,10 +2,23 @@
 
 require 'byebug'
 require 'simplecov'
+require 'active_model'
 
 SimpleCov.start
 
 require 'rspec_model_validations'
+
+def build_dummy &block
+  Class.new do
+    include ActiveModel::Model
+
+    attr_accessor :attr
+
+    def self.model_name; ActiveModel::Name.new self, nil, 'dummy' end
+
+    instance_eval(&block)
+  end
+end
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
