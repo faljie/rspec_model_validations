@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe RspecModelValidations::Matchers::Validate do
   let(:model) do
     build_dummy do
@@ -79,6 +81,6 @@ RSpec.describe RspecModelValidations::Matchers::Validate do
   describe '#description' do
     subject { instance.description }
 
-    it  { should eq 'validate :target attribute' }
+    it { should eq 'validate :target attribute' }
   end
 end

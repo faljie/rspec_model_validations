@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe RspecModelValidations::Matchers::Base do
   let(:model) do
     build_dummy do
@@ -13,10 +15,13 @@ RSpec.describe RspecModelValidations::Matchers::Base do
 
       include RspecModelValidations::Matchers::Base
 
-      def message expected, got; super end
-      def attribute_belongs_to! model; super end
-      def attribute_errors model; super end
-      def attribute_value model; super end
+      def message expected, got; super end # rubocop:disable Lint/UselessMethodDefinition
+
+      def attribute_belongs_to! model; super end # rubocop:disable Lint/UselessMethodDefinition
+
+      def attribute_errors model; super end # rubocop:disable Lint/UselessMethodDefinition
+
+      def attribute_value model; super end # rubocop:disable Lint/UselessMethodDefinition
     end
   end
   let(:instance) { dummy.new :target }

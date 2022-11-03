@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe RspecModelValidations::Matchers::Invalidate do
   let(:model) do
     build_dummy do

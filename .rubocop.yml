@@ -9,12 +9,21 @@ Style/SingleLineMethods:
 Style/MethodDefParentheses:
   Enabled: false
 
+Style/NestedParenthesizedCalls:
+  Enabled: false
+
 Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
+Lint/AmbiguousBlockAssociation:
   Enabled: false
 
 Metrics/BlockLength:
   Exclude:
     - /app/spec/**/**/**/**/**/**/*.rb
+
+Style/ClassAndModuleChildren:
+  Enabled: false
 
 Gemspec/RequiredRubyVersion:
   Enabled: false

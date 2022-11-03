@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Test if model validation lead to errors on the given attribute.
 #
 # Option:

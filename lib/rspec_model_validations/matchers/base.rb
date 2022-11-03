@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Dry matcher code
 module RspecModelValidations::Matchers::Base
   # @param attribute [Symbol, String]

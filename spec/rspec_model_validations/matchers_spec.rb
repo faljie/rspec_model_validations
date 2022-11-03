@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe RspecModelValidations::Matchers do
   let(:dummy) do
     Class.new { include RspecModelValidations::Matchers }.new

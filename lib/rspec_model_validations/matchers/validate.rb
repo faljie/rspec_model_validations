@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Test if model validation does not lead to errors on the given attribute.
 class RspecModelValidations::Matchers::Validate
   include RspecModelValidations::Matchers::Base
@@ -12,7 +14,7 @@ class RspecModelValidations::Matchers::Validate
     @model = model
     @errors = attribute_errors model
 
-    @errors.count == 0
+    @errors.empty?
   end
 
   # Explain why matches? fail and show errors

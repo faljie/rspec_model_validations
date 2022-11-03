@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Rspec 'alias' to run matchers.
 # Include with rspec configuration method `include`
 module RspecModelValidations::Matchers
