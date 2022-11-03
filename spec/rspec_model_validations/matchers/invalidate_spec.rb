@@ -91,12 +91,12 @@ RSpec.describe RspecModelValidations::Matchers::Invalidate do
     before { instance.matches? model }
     subject { instance.failure_message }
 
-    it { should eq "\nexpected: :valid to be an invalid value for #{model.class}#target\n     got: []" }
+    it { should eq "\nexpected: :valid on #{model.class}#target to be invalidated\n     got: []" }
 
     context 'when option with is set' do
       before { instance.with :blank }
 
-      it { should eq "\nexpected: #{model.class}#target to invalidate :valid with :blank\n     got: []" }
+      it { should eq "\nexpected: :valid on #{model.class}#target to be invalidated with :blank\n     got: []" }
     end
   end
 
@@ -107,12 +107,12 @@ RSpec.describe RspecModelValidations::Matchers::Invalidate do
     end
     subject { instance.failure_message_when_negated }
 
-    it { should eq "\nexpected: nil to be a valid value for #{model.class}#target\n     got: [:blank]" }
+    it { should eq "\nexpected: nil on #{model.class}#target to be validated\n     got: [:blank]" }
 
     context 'when option with is set' do
       before { instance.with :blank }
 
-      it { should eq "\nexpected: #{model.class}#target not to invalidate nil with :blank\n     got: [:blank]" }
+      it { should eq "\nexpected: nil on #{model.class}#target not to be invalidated with :blank\n     got: [:blank]" }
     end
   end
 

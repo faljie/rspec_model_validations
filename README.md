@@ -1,6 +1,6 @@
 # RspecModelValidations
 
-*Extra matcher to improve model validation testing.*
+*Extra matchers to improve testing of model validation*
 
 Testing model validation can be a bit clunky:
 
@@ -25,6 +25,7 @@ Testing model validation can be a bit clunky:
 ```
 
 * `model.errors.messages_for` test specific attribute / validation but validator message must be pass
+
 ```
   model.attribute = 'invalid'
   model.validate
@@ -71,6 +72,12 @@ RspecModelValidations fix it by adding matchers to focus test on specific attrib
 ```
   # Add additional requires below this line. Rails is not loaded until this point!
   require 'rspec_model_validations'
+
+  # ...
+
+  RSpec.configure do |config|
+    config.include RspecModelValidations::Matchers
+  end
 ```
 
 ## Usage
@@ -96,11 +103,11 @@ Options:
 
 ```
   model.attribute = 'invalid'
-  expect(model).to invalidate(:attribute).with :not_a_number
+  expect(model).to invalidate(:attribute).with :blank, :not_a_number
 
   # equivalent to
   model.attribute = 9
-  expect(model.errors.filter { |error| error.attribute == :attribute && error.type == :not_a_number }).to be_empty
+  expect(model.errors.group_by_attribute(:attribute).map(&:type)).to include(:blank, :not_a_number)
 ```
 
 ### Test successfull validation
@@ -115,5 +122,5 @@ It run validation and then test that none errors are related to the given attrib
   # equivalent to
   model.attribute = 9
   model.validate
-  expect(model.errors[:attribute]).to be_blank
+  expect(model.errors[:attribute]).to be_empty
 ```

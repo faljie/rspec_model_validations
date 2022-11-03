@@ -36,8 +36,8 @@ class RspecModelValidations::Matchers::Invalidate
     attribute = "#{@model.class}##{@attribute}"
     value = attribute_value(@model).inspect
 
-    expected = "#{value} to be an invalid value for #{attribute}"
-    expected = "#{attribute} to invalidate #{value} with #{@with.map(&:inspect).join ', '}" unless @with.nil?
+    expected = "#{value} on #{attribute} to be invalidated"
+    expected = "#{expected} with #{@with.map(&:inspect).join ', '}" unless @with.nil?
 
     message expected, @errors
   end
@@ -48,8 +48,8 @@ class RspecModelValidations::Matchers::Invalidate
     attribute = "#{@model.class}##{@attribute}"
     value = attribute_value(@model).inspect
 
-    expected = "#{value} to be a valid value for #{attribute}"
-    expected = "#{attribute} not to invalidate #{value} with #{@with.map(&:inspect).join ', '}" unless @with.nil?
+    expected = "#{value} on #{attribute} to be validated"
+    expected = "#{value} on #{attribute} not to be invalidated with #{@with.map(&:inspect).join ', '}" unless @with.nil?
 
     message expected, @errors
   end
