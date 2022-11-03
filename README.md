@@ -4,7 +4,7 @@
 
 Testing model validation can be a bit clunky:
 
-* `model.valid?` test the entire model and it can lead to false positive in case of multiple validations
+* `model.valid?` test the entire model so it can lead to false positive in case of multiple validations
   ```ruby
     validates :attribute, presence: true, numericality: { greater_than: 6 })
 
@@ -17,16 +17,16 @@ Testing model validation can be a bit clunky:
     model.validate
     expect(model.errors).to be_added(:attribute, :greater_than, value: 3, count: 6)
   ```
-* `model.errors.messages_for` test specific attribute / validation but validator message must be pass
+* `model.errors[]` help tp test specific attribute / validation but validator message must be pass
   ```ruby
     expect(model.errors[:attribute]).to include 'must be greater than 6'
   ```
-* As validation are test through 'raw code' spec message can be hard to understand
+* As validation are test through "raw code" spec message can be hard to understand
   ```ruby
     # => expected `#<ActiveModel::Errors []>.added?(:attr, :not_a_number, {:value=>"invalid"})` to be truthy, got false
   ```
 
-RspecModelValidations improve it by adding matchers to focus test on specific attribute / validation type.
+rspec_model_validations improve it by adding matchers to focus test on specific attribute / validation type.
 
 ```ruby
   model.attribute = 9
@@ -45,13 +45,13 @@ RspecModelValidations improve it by adding matchers to focus test on specific at
 
 ## Installation
 
-1. Add rspec_model_validations to your application in :test env
+1. Add this gem to your application in :test env
 
 ```ruby
-  gem 'rspec_model_validations', '~> 1.0', require: false, groupe: :test
+  gem 'rspec_model_validations', '~> 1.0', require: false, group: :test
 ```
 
-2. Setup rspec_model_validations in spec/rails_helper.rb file
+2. Setup spec/rails_helper.rb file to access matchers
 
 ```ruby
   # Add additional requires below this line. Rails is not loaded until this point!
@@ -76,21 +76,22 @@ It run validation and test that the targeted attribute have at least one error.
   expect(model).to invalidate :attribute
 
   # equivalent to
-  model.attribute = 9
+  model.attribute = 'invalid'
   model.validate
   expect(model.errors[:attribute]).to be_present
 ```
 
 Options:
 
-* `with` specify which error type must be present. It accept single or multiple symbols.
+* `with` specify which errors type must be present. It accept single or multiple symbols.
 
 ```ruby
-  model.attribute = 'invalid'
+  model.attribute = nil
   expect(model).to invalidate(:attribute).with :blank, :not_a_number
 
   # equivalent to
-  model.attribute = 9
+  model.attribute = nil
+  model.validate
   expect(model.errors.group_by_attribute(:attribute).map(&:type)).to include(:blank, :not_a_number)
 ```
 
