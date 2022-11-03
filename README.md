@@ -1,40 +1,31 @@
+===> implement on to set value
+===> inspiration shoulda / rails rspec
+  allow value
+  custom matcher pas gerer
 # RspecModelValidations
 
 *Extra matchers to improve testing of model validation*
 
 Testing model validation can be a bit clunky:
+* `model.valid?` test the entire model so it can lead to errors
+* specific error on attribute can be test with `model.added?` or `errors[:attribute]` but options or message must be provided
+* attribute setting and validation trigger must be call
+* as validation are test through "raw code" failure message can be hard to understand
 
-* `model.valid?` test the entire model so it can lead to false positive in case of multiple validations
-  ```ruby
-    validates :attribute, presence: true, numericality: { greater_than: 6 })
-
-    # numericality add errors when value is nil so presence validator can't be test
-  ```
-* Model validation must be run
-* `model.errors.added?` test specific attribute / validation but options must be pass
-  ```ruby
-    model.attribute = 3
-    model.validate
-    expect(model.errors).to be_added(:attribute, :greater_than, value: 3, count: 6)
-  ```
-* `model.errors[]` help tp test specific attribute / validation but validator message must be pass
-  ```ruby
-    expect(model.errors[:attribute]).to include 'must be greater than 6'
-  ```
-* As validation are test through "raw code" spec message can be hard to understand
-  ```ruby
-    # => expected `#<ActiveModel::Errors []>.added?(:attr, :not_a_number, {:value=>"invalid"})` to be truthy, got false
-  ```
-
-rspec_model_validations improve it by adding matchers to focus test on specific attribute / validation type.
+`rspec_model_validations` make testing smoother by adding matchers to focus test on specific attribute / validation.
 
 ```ruby
-  model.attribute = 9
+  # model
+  validates :attribute, numericality: true
 
-  expect(model).to validate :attribute
-  expect(model).to invalidate(:attribute).with :greater_than
+  # spec
+  expect(model).to invalidate(:attribute).with(:blank, :not_a_number).on nil
 
-  # => expected 9 on ModelClass#attribute to be invalidated with greater_than
+  # equivalent to
+  model.attribute = nil
+  model.validate
+  expect(model.errors).to be_added :attribute, :blank
+  expect(model.errors).to be_added :attribute, :not_a_number, value: nil
 ```
 
 ## Requirements
@@ -72,11 +63,11 @@ rspec_model_validations improve it by adding matchers to focus test on specific 
 It run validation and test that the targeted attribute have at least one error.
 
 ```ruby
-  model.attribute = 'invalid'
+  model.attribute = nil
   expect(model).to invalidate :attribute
 
   # equivalent to
-  model.attribute = 'invalid'
+  model.attribute = nil
   model.validate
   expect(model.errors[:attribute]).to be_present
 ```
@@ -95,6 +86,17 @@ Options:
   expect(model.errors.group_by_attribute(:attribute).map(&:type)).to include(:blank, :not_a_number)
 ```
 
+* `on` set the attribute value
+
+```ruby
+  expect(model).to invalidate(:attribute).on nil
+
+  # equivalent to
+  model.attribute = nil
+  model.validate
+  expect(model.errors[:attribute]).to be_present
+```
+
 ### Test successfull validation
 
 `validate :attribute` test a specific attribute validity.
@@ -109,3 +111,6 @@ It run validation and then test that none errors are related to the given attrib
   model.validate
   expect(model.errors[:attribute]).to be_empty
 ```
+
+Options:
+  * `on` see invalidate on option
