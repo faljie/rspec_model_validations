@@ -28,7 +28,7 @@ Testing model validation can be a bit clunky:
 
 * ~> 1.0: rails ~> 7.0
 
-*Note: it should be able to run with older version of rails but behaviour is not garented.*
+*Note: it should be able to run with older version of rails but behaviour is not garanted.*
 
 ## Installation
 
