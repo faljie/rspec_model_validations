@@ -21,6 +21,10 @@ test:
 lint:
 	@ docker run $(option) ${container} rubocop ${args}
 
+# display linter error
+lintf:
+	@ docker run $(option) ${container} rubocop -A ${args}
+
 # documentation compilation
 doc:
 	@ docker run $(option) $(container) yardoc --list-undoc $(args)

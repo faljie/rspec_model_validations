@@ -7,6 +7,8 @@ source 'https://rubygems.org'
 gemspec
 
 ## TEST
+# Model framework in order to run validation
+gem 'activemodel', '~> 7.0.0'
 # Framework
 gem 'rspec', '~> 3.10.0'
 # Coverage
