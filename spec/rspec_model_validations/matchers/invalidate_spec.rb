@@ -85,6 +85,15 @@ RSpec.describe RspecModelValidations::Matchers::Invalidate do
         expect { subject }.to raise_error RspecModelValidations::Error
       end
     end
+
+    context 'when on option is set' do
+      before { instance.on nil }
+
+      it 'should set attribute to on and impact result' do
+        expect { subject }.to change { model.target }
+        is_expected.to be_truthy
+      end
+    end
   end
 
   describe '#failure_message' do
@@ -126,5 +135,11 @@ RSpec.describe RspecModelValidations::Matchers::Invalidate do
 
       it { should eq 'invalidate :target attribute with :blank, :not_a_number' }
     end
+  end
+
+  describe '#with' do
+    subject { instance.with :error }
+
+    it { should eq instance }
   end
 end

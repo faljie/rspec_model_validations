@@ -58,6 +58,15 @@ RSpec.describe RspecModelValidations::Matchers::Validate do
         expect { subject }.to raise_error RspecModelValidations::Error
       end
     end
+
+    context 'when on option is set' do
+      before { instance.on nil }
+
+      it 'should set attribute to on and impact result' do
+        expect { subject }.to change { model.target }
+        is_expected.to be_falsy
+      end
+    end
   end
 
   describe '#failure_message' do

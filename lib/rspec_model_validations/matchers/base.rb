@@ -9,6 +9,15 @@ module RspecModelValidations::Matchers::Base
     @errors = nil
   end
 
+  # Store given value
+  # @param value [Object]
+  # @return [self]
+  def on value
+    @on = value
+
+    self
+  end
+
   private
 
   # Raise an error if model does not posses @attribute
@@ -21,9 +30,11 @@ module RspecModelValidations::Matchers::Base
   end
 
   # Run model validations and return attribute errors type
+  # Set model attribute with on value when on is set.
   # @param model [ActiveModel::Model]
   # @return [Array]
   def attribute_errors model
+    model.instance_variable_set "@#{@attribute}", @on if defined? @on
     model.validate
     model.errors.group_by_attribute[@attribute]&.map(&:type) || []
   end

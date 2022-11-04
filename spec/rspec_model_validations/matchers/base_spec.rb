@@ -22,6 +22,8 @@ RSpec.describe RspecModelValidations::Matchers::Base do
       def attribute_errors model; super end # rubocop:disable Lint/UselessMethodDefinition
 
       def attribute_value model; super end # rubocop:disable Lint/UselessMethodDefinition
+
+      def on_getter; @on end
     end
   end
   let(:instance) { dummy.new :target }
@@ -59,6 +61,26 @@ RSpec.describe RspecModelValidations::Matchers::Base do
 
       it { should eq [] }
     end
+
+    context 'when #on have not been set' do
+      before { model.target = :valid }
+
+      it 'should not set attribute' do
+        expect { subject }.not_to change { model.target }
+      end
+    end
+
+    context 'when #on is set' do
+      before do
+        model.target = :valid
+        instance.on nil
+      end
+
+      it 'should set attribute with on value before run validation' do
+        expect { subject }.to change { model.target }
+        is_expected.to eq [:blank]
+      end
+    end
   end
 
   describe '#attribute_value' do
@@ -71,5 +93,15 @@ RSpec.describe RspecModelValidations::Matchers::Base do
     subject { instance.message 'first', 'second' }
 
     it { should eq "\nexpected: first\n     got: second" }
+  end
+
+  describe '#on' do
+    subject { instance.on :value }
+
+    it { should eq instance }
+
+    it 'should change on value' do
+      expect { subject }.to change { instance.on_getter }
+    end
   end
 end

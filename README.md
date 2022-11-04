@@ -1,7 +1,3 @@
-===> implement on to set value
-===> inspiration shoulda / rails rspec
-  allow value
-  custom matcher pas gerer
 # RspecModelValidations
 
 *Extra matchers to improve testing of model validation*

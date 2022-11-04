@@ -15,7 +15,12 @@ class RspecModelValidations::Matchers::Invalidate
 
   # Set the with option
   # @param errors [*Symbol] One or more error which should be in attribute errors
-  def with *errors; @with = errors end
+  # @return [self]
+  def with *errors
+    @with = errors
+
+    self
+  end
 
   # Run the test
   # @param model[ActiveModel::Model]
