@@ -34,7 +34,7 @@ module RspecModelValidations::Matchers::Base
   # @param model [ActiveModel::Model]
   # @return [Array]
   def attribute_errors model
-    model.instance_variable_set "@#{@attribute}", @on if defined? @on
+    model.attributes = { @attribute => @on } if defined? @on
     model.validate
     model.errors.group_by_attribute[@attribute]&.map(&:type) || []
   end
@@ -43,7 +43,7 @@ module RspecModelValidations::Matchers::Base
   # Attribute must exist
   # @param model [ActiveModel::Model]
   # @return [Object]
-  def attribute_value model; model.instance_variable_get "@#{@attribute}" end
+  def attribute_value model; model.send @attribute end
 
   # Format a matcher expected / got faillure message
   # @param expected [String] expected part of the message
